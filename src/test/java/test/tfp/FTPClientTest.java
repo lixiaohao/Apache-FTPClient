@@ -9,10 +9,7 @@ import org.junit.Test;
 import sun.net.ftp.FtpClient;
 import sun.net.ftp.FtpProtocolException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
@@ -24,7 +21,7 @@ import java.util.logging.Logger;
  * @Create 2016-10-27 13:24
  * @Company
  */
-public class FtpTest {
+public class FTPClientTest {
 Logger logger = Logger.getLogger("FtpTestLogger");
     FTPClient ftp;
 
@@ -92,37 +89,26 @@ Logger logger = Logger.getLogger("FtpTestLogger");
             e.printStackTrace();
         }
     }
-//创建文件
+//下载文件
     @Test
     public void makdFile(){
-        String fileName = "20161027.txt";
-        File file = new File(fileName);
-        try {
-            InputStream inputStream = new FileInputStream(file);
-        Boolean flag = ftp.storeFile(fileName,inputStream);
-        logger.info("result{}"+flag);
-        }catch (IOException e){
-            e.printStackTrace();
+        String ftpFileName = "test.txt";
+        String osFileName = "download.txt";
+        File file = new File(osFileName);
+        //文件不存在则下载文件
+        if(!file.exists()){
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                Boolean flag = ftp.retrieveFile(ftpFileName,out);
+                //输出下载结果
+                logger.info("result{}"+flag);
+                //输出文件绝对路径
+                logger.info("filedir:"+file.getAbsolutePath());
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
+
     }
 
-    public static void main(String[] args) {
-        //创建ftp
-        FtpClient ftp = null;
-        try {
-            //创建地址
-            SocketAddress addr = new InetSocketAddress("192.168.0.136", 21);
-            //连接
-            ftp = FtpClient.create();
-            ftp.connect(addr);
-            //登陆
-            ftp.login("lixiaohao", "1234567".toCharArray());
-
-//            ftp.setBinaryType();
-        } catch (FtpProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
