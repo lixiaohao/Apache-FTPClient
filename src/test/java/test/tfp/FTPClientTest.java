@@ -53,6 +53,9 @@ Logger logger = Logger.getLogger("FtpTestLogger");
         }
     }
 
+    /***
+     * The Base command
+     */
     @Test
     public void ftpBaseTest(){
 
@@ -79,7 +82,10 @@ Logger logger = Logger.getLogger("FtpTestLogger");
         }
     }
 
-//创建文件夹
+
+    /***
+     * create directory or file
+     */
     @Test
     public void createDir(){
         try {
@@ -89,7 +95,11 @@ Logger logger = Logger.getLogger("FtpTestLogger");
             e.printStackTrace();
         }
     }
-//下载文件
+
+
+    /***
+     * DownLoad Test
+     */
     @Test
     public void makdFile(){
         String ftpFileName = "test.txt";
@@ -109,6 +119,20 @@ Logger logger = Logger.getLogger("FtpTestLogger");
             }
         }
 
+    }
+
+    /***
+     * delete test
+     */
+    @Test
+    public void deleteFile(){
+        String fileName = "test.txt";
+        try {
+            boolean flag = ftp.deleteFile(fileName);
+            logger.info("result{} "+flag);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
